@@ -1,0 +1,148 @@
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<script src="https://cdn.opencpu.org/opencpu-0.4.js"></script>
+<script src="https://statistics-is-awesome.org/iNZightR/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+
+<script>
+  // line below is need for CORS
+// outside of R-based app
+//ocpu.seturl("https://cloud.opencpu.org/ocpu/apps/annafergusson/codeshare/R")
+
+$(function() {
+
+  //code stuff
+   var editor;
+   $('.code-exercise').each(function(index) {
+     $(this).before("<button class='org' id='" + index + "'>Start over</button><button class='share_code' id='" + index + "' style='margin-left:20px'>Share code</button><button class='code' id='" + index + "'>Run code</button><img class='loader' style='display:none' id='" + index + "' src='mini-cat.gif' /><div style='clear:both'><textarea id='share_link' style='width:100%; display:none'></textarea></div>")
+     $(this).after("<div class='code-output'></div>");
+     //stash original code in data
+     $(this).data("org-code", $(this).text());
+     editor = ace.edit(this);
+     //editor.setTheme("ace/theme/github");
+     editor.getSession().setMode("ace/mode/r");
+     editor.setFontSize("14px");
+     editor.getSession().setUseWrapMode(true);
+     editor.setOptions({maxLines: Infinity});
+     editor.setHighlightActiveLine(false);
+     editor.setShowPrintMargin(false);
+     editor.setShowFoldWidgets(false);
+     editor.setBehavioursEnabled(true);
+     editor.renderer.setDisplayIndentGuides(false);
+     editor.session.getSelection().clearSelection();
+     editor.session.insert({row: editor.session.getLength(),col: 0}, "\n");
+   });
+   
+   //load external code
+   var urlParams = new URLSearchParams(window.location.search);
+  if(urlParams.has('code'))
+  {
+    var code = urlParams.get('code');
+    code = decodeURI(code);
+    if(code !== "")
+    {
+        document.getElementById('loader').className = 'loading';
+      fetch(code, {mode: 'cors'})
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(new_code) {
+       
+       var id = 0;
+       $('.code-exercise:eq(' + id + ')').each(function(index) {
+        editor = ace.edit(this);
+       editor.setValue(new_code);
+        editor.session.getSelection().clearSelection();
+        editor.session.insert({row: editor.session.getLength(),col: 0}, "\n");
+       })
+        document.getElementById('loader').className = '';
+        $(".code-exercise").show();
+      });
+    }
+    else
+    {
+      document.getElementById('loader').className = '';
+      $(".code-exercise").show();
+    }
+  }
+  else
+  {
+     document.getElementById('loader').className = '';
+      $(".code-exercise").show();
+  }
+   
+
+  //when the "run code" button is clicked
+  $(".code").click(function(){
+       var id = $(this).attr("id");
+       //disable this button
+       $(this).prop('disabled', true);
+       $('.loader:eq(' + id + ')').show();
+       $('.code-exercise:eq(' + id + ')').each(function(index) {
+      $(this).css("opacity",0.6);
+       $('.code-output:eq(' + id + ')').css("opacity",0.6);
+       editor = ace.edit(this);
+       var codeText = editor.getSession().getValue();
+       //prevent caching - issue for random stuff
+       var clearCache = "\nclear_cache <- " + new Date().getTime();
+       var rmdText = "```{r echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=5, dev='ragg_png'}\n" + codeText + clearCache + "\n```";
+       renderRmd(rmdText, id);
+       })
+    })
+    
+  $(".org").click(function(){
+       window.location.reload(true);
+    })
+    
+  $(".share_code").click(function(){
+    $(this).prop('disabled', true);
+    var pass = window.prompt("Please enter the password");
+    $("#share_link").val("");
+    $("#share_link").hide();
+    var id = $(this).attr("id");
+    $('.code-exercise:eq(' + id + ')').each(function(index) {
+     //get current code
+     var editor = editor = ace.edit(this);
+     var codeText = editor.getSession().getValue();
+     var saveCode = codeText;
+    
+     // get text link from csvmonster
+     var data = "t=" + saveCode + "&p=" + pass;
+     var textMonster = "https://csv.monster/textLinkPass.php";
+     $.post(textMonster, { t: saveCode, p: pass} ).done    (function( data ) {
+    var sharesy = "https://annafergusson.ocpu.io/codeshare/www/?code=" + data;
+    if(data == "Incorrect password"){sharesy = "Incorrect password"}
+        $("#share_link").val(sharesy); 
+        $("#share_link").show();
+        $(".share_code").prop('disabled', false);
+  });
+    })
+  })
+    
+  function renderRmd(textCode, id){
+   var req = ocpu.call("rmdtext", {
+      text : textCode
+    }, function(session){
+    $.get(session.getFileURL("output.html"),            function( data) {
+    $('.code-output:eq(' + id + ')').html("");
+    $('.code-output:eq(' + id + ')').html(data);     // make any HTML tables interactive
+    $('.code-output:eq(' + id + ') > .kable-table > table').DataTable({searching: false, lengthChange: false, order: [] });
+        })    
+         $('.code:eq(' + id + ')').prop('disabled', false);
+         $('.loader:eq(' + id + ')').hide();
+         $('.code-exercise:eq(' + id + ')').css("opacity", 1);
+         $('.code-output:eq(' + id + ')').css("opacity",1);
+         $('html,body').animate({scrollTop: $('.code-output:eq(' + id + ')').offset().top}, 500);
+    }).fail(function(text){
+      $('.code-output:eq(' + id + ')').html("Error: " + req.responseText);
+       $('.code:eq(' + id + ')').prop('disabled', false);
+       $('.loader:eq(' + id + ')').hide();
+       $('.code-exercise:eq(' + id + ')').css("opacity", 1);
+	   $('.code-output:eq(' + id + ')').css("opacity",1);
+    });
+   
+  }  
+});
+</script>

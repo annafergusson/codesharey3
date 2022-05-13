@@ -1,0 +1,20 @@
+body {
+  overflow-y: scroll; 
+}
+
+h1 {
+  margin-top: 5px
+}
+
+.code-output{
+  overflow: auto;
+}
+
+.code, .next, .loading {
+  float:right;
+}
+
+.code-header{
+  background-color:#aecdd2;
+  display:block;
+}
