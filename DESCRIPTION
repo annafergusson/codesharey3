@@ -11,4 +11,7 @@ Depends:
     rmarkdown,
     ggplot2,
     tibble,
-    tidyr
+    tidyr,
+    dplyr,
+    readr,
+    stringr
