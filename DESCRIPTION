@@ -39,5 +39,5 @@ Depends:
     tidytext,
     ggalt
 Remotes: 
-    STATS-UOA/stats100fwd
+    STATS-UOA/stats100fwd,
     charlie86/spotifyr
