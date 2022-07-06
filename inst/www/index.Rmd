@@ -1,0 +1,47 @@
+---
+title: "codeshare"
+output: 
+  html_document:
+    self_contained: FALSE
+    includes:
+      in_header: "header_codeshare.html"
+---
+
+<div id="loader"></div>
+
+```{r class.source='code-exercise', eval=FALSE}
+# write, run and share R code
+```
+
+```{css, echo=FALSE}
+
+.code-output{
+  overflow: auto;
+}
+
+.code, .loader {
+  float: right;
+}
+
+.title {
+  display: none;
+}
+
+/* Absolute Center Spinner */
+.loading {
+  z-index: 999;
+  overflow: show;
+  margin: auto;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.code-exercise {
+  display:none;
+}
+```
