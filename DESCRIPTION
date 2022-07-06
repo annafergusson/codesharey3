@@ -37,7 +37,8 @@ Depends:
     opencv,
     ggpage,
     tidytext,
-    ggalt
+    ggalt,
+    stats100fwd
 Remotes: 
     STATS-UOA/stats100fwd,
     charlie86/spotifyr
