@@ -40,5 +40,5 @@ Depends:
     ggalt,
     stats100fwd
 Remotes: 
-    STATS-UOA/stats100fwd,
-    charlie86/spotifyr
+    charlie86/spotifyr,
+    STATS-UOA/stats100fwd
