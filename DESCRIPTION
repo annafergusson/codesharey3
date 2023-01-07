@@ -38,7 +38,8 @@ Depends:
     ggpage,
     tidytext,
     ggalt,
-    stats100fwd
+    stats100fwd,
+    iNZightPlots
 Remotes: 
     charlie86/spotifyr,
     STATS-UOA/stats100fwd
