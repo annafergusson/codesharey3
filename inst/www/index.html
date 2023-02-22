@@ -136,7 +136,7 @@ $(function() {
      var data = "t=" + saveCode + "&p=" + pass;
      var textMonster = "https://csv.monster/textLinkPass.php";
      $.post(textMonster, { t: saveCode, p: pass} ).done    (function( data ) {
-    var sharesy = "https://annafergusson.ocpu.io/codeshare/www/?code=" + data;
+    var sharesy = "https://annafergusson.ocpu.io/codesharey/www/?code=" + data;
     if(data == "Incorrect password"){sharesy = "Incorrect password"}
         $("#share_link").val(sharesy); 
         $("#share_link").show();
