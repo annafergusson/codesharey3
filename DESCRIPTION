@@ -33,7 +33,6 @@ Depends:
     systemfonts,
     rtweet,
     patchwork,
-    spotifyr,
     opencv,
     ggpage,
     tidytext,
@@ -46,7 +45,3 @@ Depends:
     plotrix, 
     grDevices, 
     kableExtra
-    
-Remotes: 
-    charlie86/spotifyr,
-    STATS-UOA/stats100fwd
