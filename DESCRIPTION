@@ -1,8 +1,8 @@
 Package: codesharey3
 Type: Package
 Title: Share and run R code in the browser
-Version: 1.5
-Date: 2022-05-13
+Version: 1.6
+Date: 2023-11-15
 Author: Anna Fergusson
 Maintainer: Anna Fergusson <a.fergusson@auckland.ac.nz>
 Description: Share and run R code in the browser, with an OpenCPU app
