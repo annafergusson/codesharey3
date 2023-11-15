@@ -37,8 +37,6 @@ Depends:
     ggpage,
     tidytext,
     ggalt,
-    stats100fwd,
-    iNZightPlots,
     flexdashboard,
     simmer,
     simmer.plot,
