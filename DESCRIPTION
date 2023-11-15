@@ -39,7 +39,14 @@ Depends:
     tidytext,
     ggalt,
     stats100fwd,
-    iNZightPlots
+    iNZightPlots,
+    flexdashboard,
+    simmer,
+    simmer.plot,
+    plotrix, 
+    grDevices, 
+    kableExtra
+    
 Remotes: 
     charlie86/spotifyr,
     STATS-UOA/stats100fwd
