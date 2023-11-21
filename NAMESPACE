@@ -1,4 +1,4 @@
 export(rmdtext)
-export(rmdhtml)
 export(snippet)
 export(dashboard)
+export(rmdhtml)
