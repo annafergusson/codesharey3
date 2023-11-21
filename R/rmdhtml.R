@@ -1,3 +1,4 @@
+#' @export
 dashboard <- function(text){
   writeLines(text, con = "input.Rmd");
   rmarkdown::render("input.Rmd", 
